@@ -27,7 +27,7 @@ SERVICE_NAME="bhubaneswar-cd-api"
 SERVICE_ACCOUNT="bhubaneswar-change-backend@change-detection-494607.iam.gserviceaccount.com"
 
 # Vercel production URL (update after first Vercel deploy)
-VERCEL_ORIGIN="https://bhubaneswar-cd.vercel.app"
+VERCEL_ORIGIN="https://bhubaneshwar-change-detection.vercel.app"
 
 # ── Set active project ────────────────────────────────────────────────────────
 
