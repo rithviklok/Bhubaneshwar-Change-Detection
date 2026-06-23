@@ -1,0 +1,421 @@
+/* ============================================================
+   style.css  —  Bhubaneswar Change Detection
+   Dark command-centre theme with glassmorphism panels
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Reset & base ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #060d1f;
+  --surface:     rgba(10, 18, 40, 0.92);
+  --surface2:    rgba(15, 25, 55, 0.88);
+  --border:      rgba(56, 189, 248, 0.18);
+  --accent:      #38bdf8;
+  --accent2:     #818cf8;
+  --green:       #22c55e;
+  --red:         #ef4444;
+  --orange:      #f97316;
+  --yellow:      #facc15;
+  --blue:        #3b82f6;
+  --cyan:        #06b6d4;
+  --text:        #e2e8f0;
+  --text-muted:  #64748b;
+  --text-dim:    #94a3b8;
+  --glow:        0 0 24px rgba(56, 189, 248, 0.25);
+  --panel-r:     12px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ── Full-page app shell ────────────────────────────────────── */
+#app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+#header {
+  flex-shrink: 0;
+  height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 14px;
+  z-index: 2000;
+}
+
+#header .logo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+#header .subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+#header .divider { flex: 1; }
+
+#header-actions { display: flex; gap: 8px; align-items: center; }
+
+/* ── Controls bar ───────────────────────────────────────────── */
+#controls-bar {
+  flex-shrink: 0;
+  height: 52px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 20px;
+  z-index: 1999;
+}
+
+.ctrl-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ctrl-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Button styles ──────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+.btn-period.active { background: rgba(56, 189, 248, 0.12); }
+.btn-period:nth-child(1).active { border-color: #818cf8; color: #818cf8; background: rgba(129,140,248,0.12); }
+.btn-period:nth-child(2).active { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,0.10); }
+.btn-period:nth-child(3).active { border-color: #f97316; color: #f97316; background: rgba(249,115,22,0.10); }
+.btn-period:nth-child(4).active { border-color: #38bdf8; color: #38bdf8; background: rgba(56,189,248,0.10); }
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 0.7rem;
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+/* ── Map area ───────────────────────────────────────────────── */
+#map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Leaflet overrides ──────────────────────────────────────── */
+.leaflet-container { background: #0a1628; }
+.leaflet-control-zoom a {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.leaflet-control-zoom a:hover {
+  background: rgba(56,189,248,0.15) !important;
+  color: var(--accent) !important;
+}
+.leaflet-control-attribution {
+  background: rgba(6, 13, 31, 0.7) !important;
+  color: var(--text-muted) !important;
+  font-size: 0.6rem !important;
+}
+.leaflet-control-attribution a { color: var(--accent) !important; }
+
+/* ── Side-by-side divider ───────────────────────────────────── */
+.leaflet-sbs-divider {
+  width: 3px !important;
+  background: linear-gradient(to bottom,
+    transparent 0%, var(--accent) 15%, var(--accent) 85%, transparent 100%) !important;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.6) !important;
+  cursor: ew-resize !important;
+}
+
+.leaflet-sbs-range {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  box-shadow: var(--glow) !important;
+  cursor: ew-resize !important;
+}
+
+/* ── Year labels (floating on map) ─────────────────────────── */
+.year-label {
+  position: absolute;
+  top: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  z-index: 500;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+#label-left  { left: 16px; }
+#label-right { right: 16px; }
+
+/* ── Floating panels ────────────────────────────────────────── */
+.floating-panel {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--panel-r);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--glow), 0 8px 32px rgba(0,0,0,0.4);
+  z-index: 1000;
+  overflow: hidden;
+  min-width: 220px;
+  transition: all 0.2s ease;
+}
+
+.floating-panel .panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(56,189,248,0.06);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+}
+
+.floating-panel .panel-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.floating-panel .panel-toggle {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+
+.floating-panel.collapsed .panel-toggle { transform: rotate(180deg); }
+.floating-panel.collapsed .panel-body   { display: none; }
+
+.panel-body { padding: 10px 12px; }
+
+/* ── Stats panel ────────────────────────────────────────────── */
+#stats-panel {
+  bottom: 14px;
+  right: 14px;
+  width: 250px;
+}
+
+.stat-row { margin-bottom: 10px; }
+
+.stat-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+}
+
+.stat-delta {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.stat-delta.pos { background: rgba(34,197,94,0.2);  color: #22c55e; }
+.stat-delta.neg { background: rgba(239,68,68,0.2);   color: #ef4444; }
+.stat-delta.neu { background: rgba(148,163,184,0.15); color: #94a3b8; }
+
+.bar-wrap {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 2px;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.bar-y1 { background: rgba(148,163,184,0.5); }
+.bar-y2 { background: var(--accent); }
+
+.stat-vals {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Legend panel ───────────────────────────────────────────── */
+#legend-panel {
+  bottom: 14px;
+  right: 278px;
+  width: 180px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Loading overlay ────────────────────────────────────────── */
+#loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,13,31,0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+#loading-overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(56,189,248,0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+/* ── Error toast ────────────────────────────────────────────── */
+#error-toast {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: #fca5a5;
+  font-size: 0.75rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+#error-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Recording mode ─────────────────────────────────────────── */
+body.recording-mode #header,
+body.recording-mode #controls-bar { display: none !important; }
+body.recording-mode #map { height: 100vh !important; }
+body.recording-mode .floating-panel { display: none !important; }
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }

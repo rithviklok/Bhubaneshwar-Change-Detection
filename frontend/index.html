@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhubaneswar Change Detection — Satellite Land Use Analysis 2018–2026</title>
+  <meta name="description"
+        content="Interactive satellite land-use change detection for Bhubaneswar, Odisha across four two-year periods from 2018 to 2026, powered by Google Earth Engine and Sentinel-2 imagery." />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet side-by-side swipe plugin -->
+  <script src="https://unpkg.com/@joergdietrich/leaflet.terminator@1.0.0/L.Terminator.js"></script>
+  <script src="https://lab.digital-democracy.org/leaflet-side-by-side/leaflet-side-by-side.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header id="header">
+    <span style="font-size:1.2rem;">🛰</span>
+    <div>
+      <div class="logo">Bhubaneswar Change Detection</div>
+      <div class="subtitle">Sentinel-2 · Google Earth Engine · 2018 – 2026 · Odisha, India</div>
+    </div>
+    <div class="divider"></div>
+    <div id="header-actions">
+      <a href="analysis.html" class="btn btn-sm" title="View methodology and analysis report">
+        📓 Analysis
+      </a>
+      <button id="btn-save" class="btn btn-sm" title="Download analysis as JSON">
+        💾 Save
+      </button>
+      <button id="btn-record" class="btn btn-sm btn-icon" title="Toggle recording mode (hides UI chrome)">
+        ⏺
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Controls bar ────────────────────────────────────────── -->
+  <div id="controls-bar">
+
+    <div class="ctrl-group">
+      <span class="ctrl-label">Period</span>
+      <button class="btn btn-period active" data-period="0" id="pbtn-0">2018 → 2020</button>
+      <button class="btn btn-period"        data-period="1" id="pbtn-1">2020 → 2022</button>
+      <button class="btn btn-period"        data-period="2" id="pbtn-2">2022 → 2024</button>
+      <button class="btn btn-period"        data-period="3" id="pbtn-3">2024 → 2026</button>
+    </div>
+
+    <div style="width:1px;height:28px;background:var(--border)"></div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-label">Layer</span>
+      <button class="btn active" data-layer="rgb"    id="lbtn-rgb">🌍 RGB</button>
+      <button class="btn"        data-layer="change" id="lbtn-change">🔴 Change Map</button>
+      <button class="btn"        data-layer="classify" id="lbtn-classify">🟢 NDVI Delta</button>
+    </div>
+
+    <div class="divider"></div>
+    <div id="status-msg" style="font-size:0.7rem;color:var(--text-muted);">
+      Ready — select a period and layer
+    </div>
+
+  </div>
+
+  <!-- ── Map area ─────────────────────────────────────────────── -->
+  <div id="map-container">
+    <div id="map"></div>
+
+    <!-- Year labels -->
+    <div class="year-label" id="label-left">2018</div>
+    <div class="year-label" id="label-right">2020</div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loading-text">Loading satellite imagery…</div>
+    </div>
+
+    <!-- Error toast -->
+    <div id="error-toast"></div>
+
+    <!-- ── Stats floating panel ─────────────────────────────── -->
+    <div class="floating-panel" id="stats-panel">
+      <div class="panel-header" onclick="togglePanel('stats-panel')">
+        <span class="panel-title">📊 Area Statistics</span>
+        <span class="panel-toggle">▲</span>
+      </div>
+      <div class="panel-body" id="stats-body">
+        <div style="font-size:0.68rem;color:var(--text-muted);text-align:center;padding:8px 0;">
+          Load a layer to see statistics
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Legend floating panel ────────────────────────────── -->
+    <div class="floating-panel" id="legend-panel">
+      <div class="panel-header" onclick="togglePanel('legend-panel')">
+        <span class="panel-title">🗺 Legend</span>
+        <span class="panel-toggle">▲</span>
+      </div>
+      <div class="panel-body" id="legend-body">
+        <!-- Populated by JS based on active layer -->
+        <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>Built-up Gain</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f97316"></span>Built-up Loss</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#facc15"></span>Vegetation Loss</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Vegetation Gain</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Water Gain</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#06b6d4"></span>Water Recession</div>
+      </div>
+    </div>
+
+  </div><!-- /map-container -->
+</div><!-- /app -->
+
+<script src="app.js"></script>
+</body>
+</html>
