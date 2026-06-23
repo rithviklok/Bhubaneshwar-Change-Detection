@@ -9,7 +9,7 @@
 
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:8000'
-  : 'https://bhubaneswar-cd-api-XXXXXXXXXX-el.a.run.app';   // ← update after Cloud Run deploy
+  : 'https://bhubaneswar-cd-api-360781948089.asia-south1.run.app';   // ← update after Cloud Run deploy
 
 const CITY_CENTER = [20.2961, 85.8245];
 const CITY_ZOOM   = 12;
