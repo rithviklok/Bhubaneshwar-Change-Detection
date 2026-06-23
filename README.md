@@ -3,7 +3,7 @@
 Satellite land-use change analysis for **Bhubaneswar, Odisha, India** across four two-year periods
 (2018–2026), powered by Google Earth Engine and Sentinel-2 imagery.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR_GITHUB_USERNAME/bhubaneswar-change-detection/blob/main/notebooks/bhubaneswar_analysis.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rithviklok/Bhubaneshwar-Change-Detection/blob/main/notebooks/bhubaneswar_analysis.ipynb)
 
 **Live App**: `https://your-vercel-app.vercel.app`  
 **Analysis Page**: `https://your-vercel-app.vercel.app/analysis`
@@ -80,7 +80,7 @@ The frontend auto-detects `localhost` and points to `http://localhost:8000`.
 
 Update the badge URL in `notebooks/bhubaneswar_analysis.ipynb`:
 ```
-https://colab.research.google.com/github/YOUR_GITHUB_USERNAME/bhubaneswar-change-detection/blob/main/notebooks/bhubaneswar_analysis.ipynb
+https://colab.research.google.com/github/rithviklok/Bhubaneswar-Change-Detection/blob/main/notebooks/bhubaneswar_analysis.ipynb
 ```
 
 ---
