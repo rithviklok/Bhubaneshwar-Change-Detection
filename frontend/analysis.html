@@ -168,7 +168,7 @@
       Municipal Corporation area.
     </p>
     <p>
-      All processing happens server-side on a secure Render.com backend;
+      All processing happens server-side on a secure Google Cloud Run backend;
       no Google Earth Engine account is needed to use the
       <a href="index.html">interactive map</a>.
     </p>
@@ -282,7 +282,7 @@ builtup    = bui.<span class="fn">gt</span>(0.0).<span class="fn">And</span>(ndw
   <section id="stats">
     <h2>Area Statistics</h2>
     <p>
-      Statistics are computed on-demand through the Render.com API.
+      Statistics are computed on-demand through the Cloud Run API.
       Use the <strong style="color:var(--text)">📊 Area Statistics</strong> panel on the
       <a href="index.html">live map</a> to view and download results for each period,
       or open the
@@ -321,7 +321,7 @@ builtup    = bui.<span class="fn">gt</span>(0.0).<span class="fn">And</span>(ndw
         <tr><td>Imagery</td><td>Sentinel-2 Level-2A SR Harmonized (<code>COPERNICUS/S2_SR_HARMONIZED</code>)</td></tr>
         <tr><td>Platform</td><td>Google Earth Engine — project <code>change-detection-494607</code></td></tr>
         <tr><td>Naming</td><td>Assets / cache keys prefixed <code>bhubaneswar_change_detection/</code></td></tr>
-        <tr><td>Backend</td><td>FastAPI on Render.com (Python 3.11, Singapore region)</td></tr>
+        <tr><td>Backend</td><td>FastAPI on Google Cloud Run (Python 3.11, asia-south1)</td></tr>
         <tr><td>Frontend</td><td>Vanilla JS + Leaflet.js deployed on Vercel</td></tr>
         <tr><td>Notebook</td><td>Jupyter (.ipynb) with <code>geemap</code> + <code>ee</code> — runnable in Google Colab</td></tr>
       </tbody>
@@ -340,7 +340,7 @@ builtup    = bui.<span class="fn">gt</span>(0.0).<span class="fn">And</span>(ndw
 // Load live stats from the API
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:8000'
-  : 'https://bhubaneswar-cd-api.onrender.com';
+  : 'https://bhubaneswar-cd-api-XXXXXXXXXX-el.a.run.app';   // ← update after Cloud Run deploy
 
 const PERIODS = [
   { year1: 2018, year2: 2020, label: '2018 → 2020' },

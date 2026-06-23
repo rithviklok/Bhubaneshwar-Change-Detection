@@ -1,13 +1,15 @@
 """
 main.py  —  FastAPI application for Bhubaneswar Change Detection.
 
-Deployment : Render.com  (see render.yaml)
-CORS       : allows all origins so the Vercel frontend can call this API.
+Deployment : Google Cloud Run (project: change-detection-494607)
+Auth       : Application Default Credentials via attached service account.
+CORS       : Vercel frontend domain + localhost for local dev.
 Credentials: never returned to the browser; all GEE calls happen server-side.
 """
 
 from __future__ import annotations
 
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,9 +27,22 @@ app = FastAPI(
     redoc_url   = "/redoc",
 )
 
+# CORS — allow the Vercel frontend and localhost dev servers.
+# Set CORS_ORIGIN env var on Cloud Run to your Vercel domain, e.g.
+#   https://bhubaneswar-cd.vercel.app
+_cors_origins = [
+    "http://localhost:5500",
+    "http://localhost:3000",
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:3000",
+]
+_vercel_origin = os.environ.get("CORS_ORIGIN", "")
+if _vercel_origin:
+    _cors_origins.append(_vercel_origin)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins  = ["*"],   # Vercel frontend URL (all origins for simplicity)
+    allow_origins  = _cors_origins,
     allow_methods  = ["GET", "POST", "OPTIONS"],
     allow_headers  = ["*"],
 )

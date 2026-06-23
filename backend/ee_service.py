@@ -4,15 +4,19 @@ ee_service.py  —  Google Earth Engine processing for Bhubaneswar Change Detect
 All computation is scoped to the Bhubaneswar Municipal Corporation area.
 Asset / naming convention: bhubaneswar_change_detection/*
 GEE Project              : change-detection-494607  (shared with parent project)
+
+Authentication
+--------------
+Cloud Run : Application Default Credentials (ADC) via the attached service account.
+Local dev : cached user credentials from `earthengine authenticate`.
+No service-account key file is required or used.
 """
 
 from __future__ import annotations
 
 import os
-import json
-import base64
 import ee
-from google.oauth2 import service_account
+import google.auth
 
 
 # ── Constants ──────────────────────────────────────────────────────────────────
@@ -51,31 +55,30 @@ CHANGE_LABELS: list[str] = [
 
 # ── Initialization ─────────────────────────────────────────────────────────────
 
+EE_SCOPES = ["https://www.googleapis.com/auth/earthengine"]
+
 def initialize_ee() -> None:
     """
-    Initialize Google Earth Engine.
+    Initialize Google Earth Engine using Application Default Credentials.
 
-    Local dev  : uses cached user credentials (earthengine authenticate).
-    Cloud / CI : reads GEE_CREDENTIALS_JSON (base-64-encoded service-account
-                 JSON) and GEE_PROJECT_ID from environment variables.
+    Cloud Run : The attached service account is picked up automatically via ADC.
+                No key file is needed — Cloud Run injects credentials at runtime.
+    Local dev : Falls back to cached user credentials from `earthengine authenticate`.
     """
-    project   = os.environ.get("GEE_PROJECT_ID", "change-detection-494607")
-    creds_b64 = os.environ.get("GEE_CREDENTIALS_JSON", "")
+    project = os.environ.get("GEE_PROJECT_ID", "change-detection-494607")
 
     try:
-        if creds_b64:
-            creds_dict  = json.loads(base64.b64decode(creds_b64))
-            credentials = service_account.Credentials.from_service_account_info(
-                creds_dict,
-                scopes=["https://www.googleapis.com/auth/earthengine"],
-            )
-            ee.Initialize(credentials, project=project)
-            print("[OK] EE initialized (service account) — project:", project)
-        else:
+        # Try ADC first (works on Cloud Run, Cloud Shell, Workstations, etc.)
+        credentials, _ = google.auth.default(scopes=EE_SCOPES)
+        ee.Initialize(credentials, project=project)
+        print(f"[OK] EE initialized (ADC) — project: {project}")
+    except Exception:
+        try:
+            # Fall back to local user credentials (earthengine authenticate)
             ee.Initialize(project=project)
-            print("[OK] EE initialized (user auth) — project:", project)
-    except Exception as exc:
-        raise RuntimeError(f"EE Initialization failed: {exc}") from exc
+            print(f"[OK] EE initialized (user auth) — project: {project}")
+        except Exception as exc:
+            raise RuntimeError(f"EE Initialization failed: {exc}") from exc
 
 
 # ── Internal helpers ───────────────────────────────────────────────────────────
